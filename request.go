@@ -15,6 +15,15 @@ type Request struct {
 	Body    any
 }
 
+func NewRequest(method, url string, headers http.Header, body any) Request {
+	return Request{
+		Method:  method,
+		URL:     url,
+		Headers: headers,
+		Body:    body,
+	}
+}
+
 func (r *Request) prepare(
 	ctx context.Context, marshaller Marshaller, mandatoryHeaders http.Header, prefix string,
 ) (*http.Request, error) {

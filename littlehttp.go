@@ -43,7 +43,16 @@ func (r *LittleHTTP) SetMandatoryHeaders(headers http.Header) *LittleHTTP {
 }
 
 func (r *LittleHTTP) Get(ctx context.Context, url string, headers http.Header) (*Response, error) {
-	response, err := r.Do(ctx, Request{Method: http.MethodGet, URL: url, Headers: headers})
+	response, err := r.Do(ctx, NewRequest(http.MethodGet, url, headers, nil))
+	if err != nil {
+		return nil, fmt.Errorf("do: %w", err)
+	}
+
+	return response, nil
+}
+
+func (r *LittleHTTP) Post(ctx context.Context, url string, body any, headers http.Header) (*Response, error) {
+	response, err := r.Do(ctx, NewRequest(http.MethodPost, url, headers, body))
 	if err != nil {
 		return nil, fmt.Errorf("do: %w", err)
 	}
