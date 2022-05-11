@@ -2,9 +2,10 @@ package littlehttp_test
 
 import (
 	"context"
-	"littlehttp"
 	"net/http"
 	"testing"
+
+	"github.com/kudrykv/littlehttp"
 )
 
 type roundTrip struct {
