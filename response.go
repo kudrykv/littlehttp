@@ -31,6 +31,15 @@ func newResponse(defaultUnmarshaller Unmarshaller) *Response {
 	}
 }
 
+func (r *Response) Bytes() ([]byte, error) {
+	bts, err := r.readBodyOnce()
+	if err != nil {
+		return nil, fmt.Errorf("read body once: %w", err)
+	}
+
+	return bts, nil
+}
+
 func (r *Response) Unmarshal(dst any) error {
 	bodyBytes, err := r.readBodyOnce()
 	if err != nil {
