@@ -31,6 +31,10 @@ func newResponse(defaultUnmarshaller Unmarshaller) *Response {
 	}
 }
 
+func (r *Response) Raw() *http.Response {
+	return r.raw
+}
+
 func (r *Response) Bytes() ([]byte, error) {
 	bts, err := r.readBodyOnce()
 	if err != nil {

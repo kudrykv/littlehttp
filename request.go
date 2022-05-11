@@ -28,7 +28,7 @@ func (r *Request) prepare(
 		return nil, fmt.Errorf("new request with context: %w", err)
 	}
 
-	request.Header = mergeSourceHeadersIntoDestination(request.Header, mandatoryHeaders)
+	request.Header = mergeSourceHeadersIntoDestination(r.Headers, mandatoryHeaders)
 
 	return request, nil
 }
