@@ -6,7 +6,7 @@ import (
 )
 
 type Unmarshaller func(data []byte, dst any) error
-type Marshaller func(src any) ([]byte, error)
+type Marshaller func(src any) (string, []byte, error)
 
 type Parameters struct {
 	Client              *http.Client

@@ -18,7 +18,7 @@ type Request struct {
 func (r *Request) prepare(
 	ctx context.Context, marshaller Marshaller, mandatoryHeaders http.Header, prefix string,
 ) (*http.Request, error) {
-	bodyReader, err := r.prepareBody(marshaller)
+	contentType, bodyReader, err := r.prepareBody(marshaller)
 	if err != nil {
 		return nil, fmt.Errorf("prepare body: %w", err)
 	}
@@ -30,24 +30,28 @@ func (r *Request) prepare(
 
 	request.Header = mergeSourceHeadersIntoDestination(r.Headers, mandatoryHeaders)
 
+	if len(contentType) > 0 {
+		request.Header.Set("Content-Type", contentType)
+	}
+
 	return request, nil
 }
 
-func (r Request) prepareBody(marshaller Marshaller) (*bytes.Reader, error) {
+func (r Request) prepareBody(marshaller Marshaller) (string, *bytes.Reader, error) {
 	if r.Body == nil {
-		return nil, nil
+		return "", nil, nil
 	}
 
 	if marshaller == nil {
-		return nil, errors.New("marshaller not set")
+		return "", nil, errors.New("marshaller not set")
 	}
 
-	bts, err := marshaller(r.Body)
+	contentType, bts, err := marshaller(r.Body)
 	if err != nil {
-		return nil, fmt.Errorf("marshaller: %w", err)
+		return "", nil, fmt.Errorf("marshaller: %w", err)
 	}
 
-	return bytes.NewReader(bts), nil
+	return contentType, bytes.NewReader(bts), nil
 }
 
 func (r *Request) prepareRequestObject(ctx context.Context, method, url string, body *bytes.Reader) (*http.Request, error) {
