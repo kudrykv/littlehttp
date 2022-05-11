@@ -23,7 +23,9 @@ func New(params Parameters) (*LittleHTTP, error) {
 	return &LittleHTTP{
 		client:              params.Client,
 		defaultUnmarshaller: params.DefaultUnmarshaller,
+		marshaller:          params.Marshaller,
 		urlPrefix:           params.URLPrefix,
+		mandatoryHeaders:    params.MandatoryHeaders,
 	}, nil
 }
 

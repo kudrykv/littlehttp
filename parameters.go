@@ -13,7 +13,8 @@ type Parameters struct {
 	DefaultUnmarshaller Unmarshaller
 	Marshaller          Marshaller
 
-	URLPrefix string
+	URLPrefix        string
+	MandatoryHeaders http.Header
 }
 
 func (p *Parameters) SetDefaultsAndValidate() error {
